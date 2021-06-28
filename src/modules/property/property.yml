@@ -1,0 +1,47 @@
+propertyCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+propertyUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+propertyFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+propertyFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+propertyImageUploadV1:
+  handler: functions/uploadImages.v1
+  events:
+    - http:
+        path: v1/upload-image/{property_id}
+        method: post
+        cors: true
+
+propertyFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true

@@ -1,0 +1,63 @@
+quizCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+quizSubmitV1:
+  handler: functions/submit.v1
+  events:
+    - http:
+        path: v1/submit
+        method: post
+        cors: true
+
+quizSubmitV2:
+  handler: functions/submit.v2
+  events:
+    - http:
+        path: v2/submit
+        method: post
+        cors: true
+
+quizUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+quizFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+quizFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+quizFetchCreateV1:
+  handler: functions/fetchCreate.v1
+  events:
+    - http:
+        path: v1/fetch-create
+        method: post
+        cors: true
+
+uploadEvidenceV1:
+  handler: functions/uploadEvidence.v1
+  events:
+    - http:
+        path: v1/upload-evidence/{quiz_id}/{question_id}
+        method: post
+        cors: true

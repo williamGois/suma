@@ -1,0 +1,40 @@
+service: suma-api-producer
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, "dev"}
+  region: us-east-1
+  environment: ${file(${"../../../environment.${opt:env}.yml"})}
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+
+functions:
+  - ${file(${"producers.yml"})}
+
+package:
+  individually: true
+  exclude:
+    - .git/**
+
+custom:
+  customDomain:
+    stage: ${self:provider.stage}
+    basePath: producer
+    domainName: ${opt:domain, "suma-${opt:env}-api.tentaculo.digital"}
+    certificateName: ${opt:certName, "*.tentaculo.digital"}
+    enabled: true
+    createRoute53Record: true
+  serverless-offline:
+    prefix: producer
+    httpsProtocol: ../../../.certs
+    port: 9030
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"

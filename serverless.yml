@@ -1,0 +1,59 @@
+service: suma
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: us-east-1
+  environment: ${file(${"environment.dev.yml"})}
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+functions:
+  - ${file(${"src/endpoints/users.yml"})}
+  - ${file(${"src/endpoints/producers.yml"})}
+  - ${file(${"src/endpoints/extensionist.yml"})}
+  - ${file(${"src/endpoints/admin.yml"})}
+  - ${file(${"src/endpoints/property.yml"})}
+  - ${file(${"src/endpoints/quiz.yml"})}
+  - ${file(${"src/endpoints/productType.yml"})}
+  - ${file(${"src/endpoints/productWallet.yml"})}
+  - ${file(${"src/endpoints/business.yml"})}
+  - ${file(${"src/endpoints/branch.yml"})}
+  - ${file(${"src/endpoints/demand.yml"})}
+  - ${file(${"src/endpoints/buyOrderFulfill.yml"})}
+  - ${file(${"src/endpoints/ubf.yml"})}
+  - ${file(${"src/endpoints/order.yml"})}
+  # - ${file(${"src/endpoints/serve.yml"})}
+
+package:
+  individually: true
+  exclude:
+    - .git/**
+
+custom:
+  # customDomain:
+  #   stage: ${self:provider.stage}
+  #   basePath: ${self:custom.cthulhi.scope.environment.serv-banner.subdomain}
+  #   domainName: ${self:custom.cthulhi.scope.domain.${self:provider.stage}.api}
+  #   enabled: ${self:custom.cthulhi.scope.domain.${self:provider.stage}.enable}
+  #   createRoute53Record: ${self:custom.cthulhi.scope.domain.${self:provider.stage}.createRoute53Record}
+  # cthulhi:
+  #   running: ${opt:running, self:provider.stage}
+  #   scope: ${self:custom.cthulhi.${self:custom.cthulhi.project.package.scope, 'local'}}
+  #   local: ${file(cthulhi.yml)}
+  #   project: ${file(../../cthulhi.yml)}
+  #   endpoints: ${self:custom.cthulhi.project.environment.serv-banner.endpoints, self:custom.cthulhi.local.environment.serv-banner.endpoints}
+  serverless-offline:
+    httpsProtocol: ../intranet/.certs
+    # httpsProtocol: .certs
+    # prefix: ${self:custom.cthulhi.scope.environment.serv-banner.subdomain}
+    port: 9000
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"

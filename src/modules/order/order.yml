@@ -1,0 +1,39 @@
+orderCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+orderFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+orderFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+orderUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+orderDeleteV1:
+  handler: functions/delete.v1
+  events:
+    - http:
+        path: v1/delete/{orderId}
+        method: delete
+        cors: true

@@ -1,0 +1,40 @@
+service: suma-api-ubf
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${opt:stage, "dev"}
+  region: us-east-1
+  environment: ${file(${"../../../environment.${opt:env}.yml"})}
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+
+functions:
+  - ${file(${"ubf.yml"})}
+
+package:
+  individually: true
+  exclude:
+    - .git/**
+
+custom:
+  customDomain:
+    stage: ${self:provider.stage}
+    basePath: ubf
+    domainName: ${opt:domain, "suma-${opt:env}-api.tentaculo.digital"}
+    certificateName: ${opt:certName, "*.tentaculo.digital"}
+    enabled: true
+    createRoute53Record: true
+  serverless-offline:
+    prefix: ubf
+    httpsProtocol: ../../../.certs
+    port: 9150
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"

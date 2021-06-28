@@ -1,0 +1,39 @@
+branchCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+branchUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+branchFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+branchFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+branchFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true

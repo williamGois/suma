@@ -1,0 +1,47 @@
+demandCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+demandUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+demandFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+demandFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+demandFetchHydratedV1:
+  handler: functions/fetchHydrated.v1
+  events:
+    - http:
+        path: v1/fetch-hydrated
+        method: post
+        cors: true
+
+demandFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true

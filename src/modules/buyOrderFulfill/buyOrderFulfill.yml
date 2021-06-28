@@ -1,0 +1,39 @@
+buyOrderFulfillCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+buyOrderFulfillUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+buyOrderFulfillFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+buyOrderFulfillFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+buyOrderFulfillFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true

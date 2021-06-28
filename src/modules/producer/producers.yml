@@ -1,0 +1,55 @@
+producerCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+producerUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+producerFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+producerFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true
+
+producerFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+producerImageUploadV1:
+  handler: functions/uploadImages.v1
+  events:
+    - http:
+        path: v1/upload-image/{producer_id}
+        method: post
+        cors: true
+
+findAvailableProducersV1:
+  handler: functions/findAvailableProducers.v1
+  events:
+    - http:
+        path: v1/find-available-producers
+        method: post
+        cors: true

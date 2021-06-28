@@ -1,0 +1,225 @@
+global-variables:
+  environment: &environments
+    APP_NAME: td-suma
+
+name: evaluate
+kind: pipeline
+
+steps:
+  - name: build-ui
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - docker build -t $${APP_NAME}/server/tests:${DRONE_COMMIT} --no-cache -f .dockerfile .
+    when:
+      branch:
+        - sprint.[0-9][0-9].[0-9][0-9].[0-9][0-9]
+
+  - name: build-all
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - docker build -t $${APP_NAME}/server/tests:${DRONE_COMMIT} --no-cache -f .dockerfile-with-browsers .
+    when:
+      branch:
+        - develop
+        - staging
+        - production
+
+  - name: unit tests
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - docker run $${APP_NAME}/server/tests:${DRONE_COMMIT} yarn run test-unit --coverage
+    when:
+      branch:
+        - sprint.[0-9][0-9].[0-9][0-9].[0-9][0-9]
+        - develop
+        - staging
+        - production
+
+  - name: integration tests
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      # - docker run $${APP_NAME}/server/tests:${DRONE_COMMIT} yarn run test-integration --coverage
+      - exit 0
+    when:
+      branch:
+        - sprint.[0-9][0-9].[0-9][0-9].[0-9][0-9]
+        - develop
+        - staging
+        - production
+
+  - name: e2e tests
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      # - docker run --network="host" -d --name server-tests $${APP_NAME}/server/tests:${DRONE_COMMIT} yarn run offline-start && sleep 10s
+      # - docker exec server-tests yarn run test-e2e
+      - exit 0
+    when:
+      branch:
+        - develop
+        - staging
+        - production
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  event:
+    - pull_request
+
+---
+global-variables:
+  environment: &environments
+    APP_NAME: td-suma
+
+name: deploy
+kind: pipeline
+
+steps:
+  - name: develop on aws
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - echo "Deploying application on develop environment"
+    when:
+      branch:
+        - develop
+
+  - name: staging on aws
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - echo "Deploying application on staging environment"
+    when:
+      branch:
+        - staging
+
+  - name: production on aws
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - echo "Deploying application on production environment"
+    when:
+      branch:
+        - master
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+    - staging
+    - master
+  event:
+    - pull_request
+
+depends_on:
+  - evaluate
+
+---
+global-variables:
+  environment: &environments
+    APP_NAME: td-cicd
+
+name: clear
+kind: pipeline
+
+steps:
+  - name: discord notification
+    image: appleboy/drone-discord
+    environment:
+      <<: *environments
+    settings:
+      webhook_id:
+        from_secret: discord_webhook_id
+      webhook_token:
+        from_secret: discord_webhook_token
+      tts: true
+      message: |
+        {{#success build.status}}
+        Build \#{{build.number}} 🍺 SUCCEDED! **{{uppercase commit.author}}** did no more than his obligation with a **{{uppercase build.event}}** on **{{uppercase repo.name}}** repository.
+        Branch {{commit.branch}} with message {{commit.message}}
+        Sha {{truncate commit.sha 8}}. [See the results]({{build.link}})
+        {{else}}
+        Build \#{{build.number}} ❌ FAILED!! **{{uppercase commit.author}}** is a terrorist that tried to plant a bug with a **{{uppercase build.event}}** on **{{uppercase repo.name}}** repository.
+        Branch {{commit.branch}} with message {{commit.message}}
+        Sha {{truncate commit.sha 8}}. [See the results]({{build.link}})
+        {{/success}}
+
+  - name: prunning all
+    image: docker:latest
+    pull: true
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      <<: *environments
+    commands:
+      - docker ps -a | awk '{ print $1,$2 }' | grep $${APP_NAME} | awk '{print $1 }' | xargs -I {} docker stop {}
+      - docker ps -a | awk '{ print $1,$2 }' | grep $${APP_NAME} | awk '{print $1 }' | xargs -I {} docker rm {}
+      - docker image prune -a -f
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+depends_on:
+  - evaluate
+  - deploy
+
+trigger:
+  status:
+    - failure
+    - success
+  event:
+    - pull_request

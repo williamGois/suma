@@ -1,0 +1,39 @@
+extensionistCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path:  v1/create
+        method: post
+        cors: true
+
+extensionistUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path:  v1/update
+        method: put
+        cors: true
+
+extensionistFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path:  v1/find
+        method: post
+        cors: true
+
+extensionistFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path:  v1/fetchall
+        method: get
+        cors: true
+
+extensionistFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path:  v1/fetch
+        method: post
+        cors: true

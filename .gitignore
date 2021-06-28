@@ -1,0 +1,19 @@
+# package directories
+node_modules
+jspm_packages
+dist
+
+# Hidden directories
+.vscode
+.serverless
+.certs
+/environment.stag.yml
+/environment.prod.yml
+/environment.dev.yml
+
+# Package locks
+yarn.lock
+package-lock.json
+
+# Tests
+coverage

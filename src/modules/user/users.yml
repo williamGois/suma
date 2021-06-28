@@ -1,0 +1,103 @@
+userCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+userPreRegisterV1:
+  handler: functions/preRegister.v1
+  events:
+    - http:
+        path: v1/preregister
+        method: post
+        cors: true
+
+userValidateUserCodeV1:
+  handler: functions/validateUserCode.v1
+  events:
+    - http:
+        path: v1/validatecode
+        method: post
+        cors: true
+
+userRegisterPasswordV1:
+  handler: functions/registerPassword.v1
+  events:
+    - http:
+        path: v1/updatepasswordfromcode
+        method: post
+        cors: true
+
+userUpdatePasswordV1:
+  handler: functions/updatePassword.v1
+  events:
+    - http:
+        path: v1/updatepassword
+        method: put
+        cors: true
+
+userUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+userLoginV1:
+  handler: functions/login.v1
+  events:
+    - http:
+        path: v1/login
+        method: post
+        cors: true
+
+userFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+userFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+userFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetch-all
+        method: post
+        cors: true
+
+validateTokenV1:
+  handler: functions/validateToken.v1
+  events:
+    - http:
+        path: v1/validate
+        method: post
+        cors: true
+
+sendRecoverCodeV1:
+  handler: functions/sendRecoverCode.v1
+  events:
+    - http:
+        path: v1/send-recover-code
+        method: post
+        cors: true
+
+recoverPasswordV1:
+  handler: functions/recoverPassword.v1
+  events:
+    - http:
+        path: v1/recover-password
+        method: post
+        cors: true

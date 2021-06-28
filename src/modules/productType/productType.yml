@@ -1,0 +1,55 @@
+productTypeCreateV1:
+  handler: functions/create.v1
+  events:
+    - http:
+        path: v1/create
+        method: post
+        cors: true
+
+productTypeUpdateV1:
+  handler: functions/update.v1
+  events:
+    - http:
+        path: v1/update
+        method: put
+        cors: true
+
+productTypeFindV1:
+  handler: functions/find.v1
+  events:
+    - http:
+        path: v1/find
+        method: post
+        cors: true
+
+productTypeFetchV1:
+  handler: functions/fetch.v1
+  events:
+    - http:
+        path: v1/fetch
+        method: post
+        cors: true
+
+productTypeFetchAllV1:
+  handler: functions/fetchAll.v1
+  events:
+    - http:
+        path: v1/fetchall
+        method: get
+        cors: true
+
+productTypeFetchManyV1:
+  handler: functions/fetchMany.v1
+  events:
+    - http:
+        path: v1/fetchmany
+        method: post
+        cors: true
+
+productTypeDeleteV1:
+  handler: functions/delete.v1
+  events:
+    - http:
+        path: v1/delete/{productTypeId}
+        method: delete
+        cors: true
